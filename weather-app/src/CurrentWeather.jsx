@@ -24,5 +24,36 @@ const CurrentWeather = () => {
     setUnit(unit === 'metric' ? 'imperial' : 'metric');
   };
 
+  const renderCurrentWeather = () => {
+    if (!currentWeather) {
+      return <div>Loading...</div>;
+    }
 
+    const { name, weather, main, wind, sys } = currentWeather;
+
+    return (
+      <div className="current-weather">
+        <h2>{name}, {sys.country}</h2>
+        <div className="weather-description">{weather[0].description}</div>
+        <div className="temperature">{main.temp} {unit === 'metric' ? '°C' : '°F'}</div>
+        <div className="weather-info">
+          <div>Wind: {wind.speed} {unit === 'metric' ? 'm/s' : 'mph'}</div>
+          <div>Humidity: {main.humidity}%</div>
+          <div>Sunrise: {new Date(sys.sunrise * 1000).toLocaleTimeString()}</div>
+          <div>Sunset: {new Date(sys.sunset * 1000).toLocaleTimeString()}</div>
+        </div>
+        <button onClick={toggleUnit}>
+          {unit === 'metric' ? 'Switch to Fahrenheit' : 'Switch to Celsius'}
+        </button>
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <h1>Current Weather</h1>
+      {renderCurrentWeather()}
+    </div>
+  );
+};
 export default CurrentWeather;
