@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-
+import './CurrentWeather.scss';
 
 const CurrentWeather = () => {
   const [currentWeather, setCurrentWeather] = useState(null);
-  const [unit, setUnit] = useState('metric'); // standard är Celcius 
+  const [unit, setUnit] = useState('metric'); 
 
   useEffect(() => {
-    //Hämta aktuell väderdata för användarens aktuella position
+   
     navigator.geolocation.getCurrentPosition(async (position) => {
       const { latitude, longitude } = position.coords;
 
@@ -56,4 +56,5 @@ const CurrentWeather = () => {
     </div>
   );
 };
+
 export default CurrentWeather;
