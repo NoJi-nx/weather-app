@@ -6,7 +6,7 @@ const App = () => {
   return (
     <div>
       <CurrentWeather />
-    </div>
+  </div>
   );
 };
 
