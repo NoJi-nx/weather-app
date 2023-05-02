@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import './CurrentWeather.scss';
 
 const CurrentWeather = () => {
   const [currentWeather, setCurrentWeather] = useState(null);
-  const [unit, setUnit] = useState('metric'); 
+  const [unit, setUnit] = useState('metric'); // default to Celsius
+  const [searchLocation, setSearchLocation] = useState('');
 
   useEffect(() => {
-   
+    
     navigator.geolocation.getCurrentPosition(async (position) => {
       const { latitude, longitude } = position.coords;
 
@@ -22,6 +22,22 @@ const CurrentWeather = () => {
 
   const toggleUnit = () => {
     setUnit(unit === 'metric' ? 'imperial' : 'metric');
+  };
+
+  const handleSearchLocationChange = (event) => {
+    setSearchLocation(event.target.value);
+  };
+
+  const handleSearchLocationSubmit = async (event) => {
+    event.preventDefault();
+
+    const apiKey = 'ec8a9e0735a382ff5d6dafc6a4333c84';
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchLocation}&units=${unit}&appid=${apiKey}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    setCurrentWeather(data);
   };
 
   const renderCurrentWeather = () => {
@@ -52,9 +68,20 @@ const CurrentWeather = () => {
   return (
     <div>
       <h1>Current Weather</h1>
+      <form onSubmit={handleSearchLocationSubmit}>
+        <label htmlFor="search-location">Search for location:</label>
+        <input
+          id="search-location"
+          type="text"
+          value={searchLocation}
+          onChange={handleSearchLocationChange}
+        />
+        <button type="submit">Search</button>
+      </form>
       {renderCurrentWeather()}
     </div>
   );
 };
+
 
 export default CurrentWeather;
