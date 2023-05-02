@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const WeatherForecast = () => {
+  // skapa tre variabler: forecastData, isLoading, isError
   const [forecastData, setForecastData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
+  // hämtar väderprognos data genom använda geolocation API and OpenWeatherMap API
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -16,20 +18,25 @@ const WeatherForecast = () => {
             `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=ec8a9e0735a382ff5d6dafc6a4333c84&units=metric&cnt=64`
           );
 
+          // sätter up prognosen och updaterar laddningen
           setForecastData(response.data);
           setIsLoading(false);
         } catch (error) {
+          // hantera errors genom updatera laddning och errorn
           setIsLoading(false);
           setIsError(true);
         }
       },
       (error) => {
+        // hantera errors genom updatera laddning och errorn
         setIsLoading(false);
         setIsError(true);
       }
     );
   }, []);
 
+
+  // formaterar porognos data så de inkluderar endast data mellan 9am och 6pm 
   const formatForecastData = () => {
     const formattedData = [];
   
@@ -37,7 +44,7 @@ const WeatherForecast = () => {
       const forecast = forecastData.list[i];
       const forecastDate = new Date(forecast.dt_txt);
   
-      // Only include data between 9am and 6pm
+      // endast inkluderar data mellan 9am och 6pm
       if (forecastDate.getHours() >= 9 && forecastDate.getHours() < 18) {
         formattedData.push({
           date: forecast.dt_txt,
@@ -52,6 +59,7 @@ const WeatherForecast = () => {
     return formattedData;
   };
 
+  // renderar formatterad prognos data som lista 
   const renderForecastData = () => {
     const formattedData = formatForecastData();
     return formattedData.map((data, index) => (
@@ -66,6 +74,7 @@ const WeatherForecast = () => {
     ));
   };
 
+  // renderar olika UI element baserad på laddning och error 
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -74,6 +83,7 @@ const WeatherForecast = () => {
     return <div>Error fetching weather </div>
   }
 
+  // renderar the väder prognos UI med formatterade data
   return (
     <div>
       <h2>Weather Forecast</h2>
