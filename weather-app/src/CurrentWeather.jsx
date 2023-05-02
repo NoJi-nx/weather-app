@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 const CurrentWeather = () => {
+  // skapa tre variabler
   const [currentWeather, setCurrentWeather] = useState(null);
-  const [unit, setUnit] = useState('metric'); // default to Celsius
+  const [unit, setUnit] = useState('metric'); // standard Celsius
   const [searchLocation, setSearchLocation] = useState('');
 
+  // Använd useEffect hook för hämtat the nuvarande väder baserad på användarens plats
   useEffect(() => {
-    
     navigator.geolocation.getCurrentPosition(async (position) => {
       const { latitude, longitude } = position.coords;
 
@@ -18,16 +19,19 @@ const CurrentWeather = () => {
 
       setCurrentWeather(data);
     });
-  }, [unit]);
+  }, [unit]); // Re-fetch the weather whenever the unit changes
 
+  // Definera funktion att välja enheter mellan Celsius och Fahrenheit
   const toggleUnit = () => {
     setUnit(unit === 'metric' ? 'imperial' : 'metric');
   };
 
+  // Definera funktion att hantera ändringar till sökningen
   const handleSearchLocationChange = (event) => {
     setSearchLocation(event.target.value);
   };
 
+  // funktion för hantera form när man ska söka
   const handleSearchLocationSubmit = async (event) => {
     event.preventDefault();
 
@@ -40,6 +44,7 @@ const CurrentWeather = () => {
     setCurrentWeather(data);
   };
 
+  //  funktion för rendera nuvarande väder data
   const renderCurrentWeather = () => {
     if (!currentWeather) {
       return <div>Loading...</div>;
@@ -65,6 +70,7 @@ const CurrentWeather = () => {
     );
   };
 
+  // rendera komponent
   return (
     <div>
       <h1>Current Weather</h1>
