@@ -81,6 +81,15 @@ const CurrentWeather = () => {
     }
   };
 
+  
+    const handleSavedLocationClick = async (location) => {
+      const apiKey = 'ec8a9e0735a382ff5d6dafc6a4333c84';
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=${unit}&appid=${apiKey}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setCurrentWeather(data);
+    };
+
   // rendera komponent
   return (
     <div>
@@ -101,15 +110,19 @@ const CurrentWeather = () => {
   <h2>Saved Locations</h2>
   <ul>
     {savedLocations.map((location) => (
-      <li key={location}>{location}</li>
-    ))}
+       <li key={location} onClick={() => handleSavedLocationClick(location)}>
+       {location}
+     </li>
+   ))}
   </ul>
 </div>
+
     </div>
 
     
   );
 };
+
 
 
 export default CurrentWeather;
