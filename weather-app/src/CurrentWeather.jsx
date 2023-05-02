@@ -5,6 +5,7 @@ const CurrentWeather = () => {
   const [currentWeather, setCurrentWeather] = useState(null);
   const [unit, setUnit] = useState('metric'); // standard Celsius
   const [searchLocation, setSearchLocation] = useState('');
+  const [savedLocations, setSavedLocations] = useState([]);
 
   // Använd useEffect hook för hämtat the nuvarande väder baserad på användarens plats
   useEffect(() => {
@@ -42,6 +43,7 @@ const CurrentWeather = () => {
     const data = await response.json();
 
     setCurrentWeather(data);
+
   };
 
   //  funktion för rendera nuvarande väder data
@@ -70,6 +72,15 @@ const CurrentWeather = () => {
     );
   };
 
+  
+
+  const handleSaveLocation = () => {
+    if (currentWeather) {
+      const locationName = `${currentWeather.name}, ${currentWeather.sys.country}`;
+      setSavedLocations((prevLocations) => [...prevLocations, locationName]);
+    }
+  };
+
   // rendera komponent
   return (
     <div>
@@ -83,9 +94,20 @@ const CurrentWeather = () => {
           onChange={handleSearchLocationChange}
         />
         <button type="submit">Search</button>
+        <button type="button" onClick={handleSaveLocation}>Save</button>
       </form>
       {renderCurrentWeather()}
+      <div>
+  <h2>Saved Locations</h2>
+  <ul>
+    {savedLocations.map((location) => (
+      <li key={location}>{location}</li>
+    ))}
+  </ul>
+</div>
     </div>
+
+    
   );
 };
 
