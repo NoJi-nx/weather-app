@@ -23,7 +23,7 @@ const CurrentWeather = () => {
 
       setCurrentWeather(data);
     });
-  }, [unit]); // Re-fetch the weather whenever the unit changes
+  }, [unit]); //fetcha när vädret ändras
 
   // Definera funktion att välja enheter mellan Celsius och Fahrenheit
   const toggleUnit = () => {
