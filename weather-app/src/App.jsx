@@ -1,14 +1,8 @@
 import React from 'react';
-import CurrentWeather from './CurrentWeather';
-import WeatherForecast from './WeatherForecast';
+import WeatherApp from './WeatherApp';
 
 const App = () => {
-  return (
-    <div>
-      <CurrentWeather />
-      <WeatherForecast />
-  </div>
-  );
+  return <WeatherApp />;
 };
 
 export default App;

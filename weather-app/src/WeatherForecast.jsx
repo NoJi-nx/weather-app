@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+
 
 const WeatherForecast = () => {
   // skapa tre variabler: forecastData, isLoading, isError
@@ -83,6 +85,42 @@ const WeatherForecast = () => {
     return <div>Error fetching weather </div>
   }
 
+  const renderWeatherForecast = () => {
+    if (!forecastData) {
+      return <div>Loading...</div>;
+    }
+
+    const { list } = forecastData;
+
+    const data = list.map((forecast) => {
+      return {
+        name: new Date(forecast.dt * 1000).toLocaleString(),
+        temperature: forecast.main.temp,
+        humidity: forecast.main.humidity,
+        windSpeed: forecast.wind.speed,
+        description: forecast.weather[0].description,
+      };
+    });
+
+    return (
+      <div>
+        <h2>Weather Forecast</h2>
+        <div className="chart-container">
+          <LineChart width={600} height={300} data={data}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="temperature" stroke="#8884d8" />
+            <Line type="monotone" dataKey="humidity" stroke="#82ca9d" />
+            <Line type="monotone" dataKey="windSpeed" stroke="#ffc658" />
+        </LineChart>
+      </div>
+    </div>
+    );
+  };
+
+
   // renderar the väder prognos UI med formatterade data
   return (
     <div>
@@ -90,6 +128,10 @@ const WeatherForecast = () => {
       <div className="forecast-list">{renderForecastData()}</div>
     </div>
   );
+
+  
 };
+
+
 
 export default WeatherForecast;
