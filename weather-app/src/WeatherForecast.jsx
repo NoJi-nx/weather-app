@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import './App.css';
 
 
 const WeatherForecast = () => {
-   // skapa tre variabler: forecastData, isLoading, isError
+   // skapa variabler
   const [forecastData, setForecastData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [viewMode, setViewMode] = useState('list');
 
    // hämtar väderprognos data genom använda geolocation API and OpenWeatherMap API
   useEffect(() => {
@@ -73,7 +75,7 @@ const WeatherForecast = () => {
 
     return (
       <div>
-        <h2>Weather Forecast List</h2>
+       
         {formattedData.map((data, index) => (
           <div key={index} className="forecast-item">
             <div>{new Date(data.date).toLocaleDateString()}</div>
@@ -97,7 +99,7 @@ const WeatherForecast = () => {
 
     return (
       <div>
-        <h2>Weather Forecast Chart</h2>
+        
         <div className="chart-container">
           <LineChart width={600} height={300} data={formattedData}>
             <XAxis dataKey="date" />
@@ -125,11 +127,19 @@ const WeatherForecast = () => {
 
    // renderar the väder prognos UI med formatterade data
   return (
-    <div>
-      {renderForecastList()}
-      {renderWeatherForecastChart()}
+    <div className="weather-forecast">
+    <h2>Weather Forecast</h2>
+    <div className="toggle-container">
+      <button onClick={() => setViewMode('list')} className={viewMode === 'list' ? 'active' : ''}>
+        Show List
+      </button>
+      <button onClick={() => setViewMode('graph')} className={viewMode === 'graph' ? 'active' : ''}>
+        Show Chart
+      </button>
     </div>
-  );
+    {viewMode === 'list' ? renderForecastList() : renderWeatherForecastChart()}
+  </div>
+);
 };
 
 export default WeatherForecast;
