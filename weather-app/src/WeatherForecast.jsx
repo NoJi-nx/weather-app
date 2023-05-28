@@ -10,7 +10,11 @@ const WeatherForecast = () => {
   const [forecastData, setForecastData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [viewMode, setViewMode] = useState('list');
+  const [showChart, setShowChart] = useState(false);
+  const [showTemperature, setShowTemperature] = useState(true);
+const [showHumidity, setShowHumidity] = useState(true);
+const [showWind, setShowWind] = useState(true);
+const [showRainfall, setShowRainfall] = useState(true);
 
    // hämtar väderprognos data 
   useEffect(() => {
@@ -49,28 +53,39 @@ const WeatherForecast = () => {
   };
 
    // formaterar porognos data så de inkluderar endast data mellan 9am och 6pm 
-  const formatForecastData = () => {
+   const formatForecastData = () => {
     const formattedData = [];
-
+  
+    let totalRainfall = 0;
+    let rainfallCount = 0;
+  
     for (let i = 0; i < forecastData.list.length; i++) {
       const forecast = forecastData.list[i];
       const forecastDate = new Date(forecast.dt_txt);
-
-      // endast inkluderar data mellan 9am och 6pm
+      const rainfall = forecast.rain && forecast.rain['3h'];
+  
+      // Include data between 9am and 6pm
       if (forecastDate.getHours() >= 9 && forecastDate.getHours() < 18) {
         formattedData.push({
           date: forecast.dt_txt,
           temperature: forecast.main.temp,
-          weather: forecast.weather[0].description,
-          wind: forecast.wind.speed,
           humidity: forecast.main.humidity,
+          wind: forecast.wind.speed,
+          rainfall: rainfall || 0, // Average rainfall value (or 0 if not available)
         });
+  
+        if (rainfall) {
+          totalRainfall += rainfall;
+          rainfallCount++;
+        }
       }
     }
-
+  
+    const averageRainfall = rainfallCount > 0 ? totalRainfall / rainfallCount : 0;
+    console.log('Average Rainfall:', averageRainfall);
+  
     return formattedData;
   };
-
   
 
    // renderar formatterad prognos data som lista och en graf 
@@ -109,16 +124,18 @@ const WeatherForecast = () => {
 
     return (
       <div>
-        
         <div className="chart-container">
           <LineChart width={600} height={300} data={formattedData}>
             <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="temperature" stroke="#8884d8" />
-            <Line type="monotone" dataKey="humidity" stroke="#82ca9d" />
-            <Line type="monotone" dataKey="wind" stroke="#ffc658" />
+            <Line type="monotone" dataKey="temperature" stroke="#8884d8" name="Temperature" />
+            <Line type="monotone" dataKey="humidity" stroke="#82ca9d" name="Humidity" />
+            <Line type="monotone" dataKey="wind" stroke="#ffc658" name="Wind" />
+            {showRainfall && (
+              <Line type="monotone" dataKey="rainfall" stroke="#ff0000" name=" Rainfall" />
+            )}
           </LineChart>
         </div>
       </div>
@@ -140,20 +157,62 @@ const WeatherForecast = () => {
   }
 
    // renderar the väder prognos UI med formatterade data
-  return (
-    <div className="weather-forecast">
-    <h2>Weather Forecast</h2>
-    <div className="toggle-container">
-      <button onClick={() => setViewMode('list')} className={viewMode === 'list' ? 'active' : ''}>
-        Show List
-      </button>
-      <button onClick={() => setViewMode('graph')} className={viewMode === 'graph' ? 'active' : ''}>
-        Show Chart
-      </button>
+   return (
+    <div>
+      <h2>Weather Forecast</h2>
+      <div className="toggle-buttons">
+      <button onClick={() => setShowChart(false)}>Show  List</button>
+        <button onClick={() => setShowChart(true)}>Show Chart</button>
+      </div>
+  
+      {showChart && (
+        <>
+          <div className="filter-options">
+            <label>
+              <input
+                type="checkbox"
+                checked={showTemperature}
+                onChange={() => setShowTemperature(!showTemperature)}
+              />
+              Temperature
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={showHumidity}
+                onChange={() => setShowHumidity(!showHumidity)}
+              />
+              Humidity
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={showWind}
+                onChange={() => setShowWind(!showWind)}
+              />
+              Wind
+            </label>
+
+            <label>
+              <input
+               type="checkbox"
+               checked={showRainfall}
+                onChange={() => setShowRainfall(!showRainfall)}
+                />
+                 Rainfall
+                </label>
+                </div>
+          {renderWeatherForecastChart()}
+        </>
+      )}
+  
+      {!showChart && (
+        <>
+          {renderForecastList()}
+        </>
+      )}
     </div>
-    {viewMode === 'list' ? renderForecastList() : renderWeatherForecastChart()}
-  </div>
-);
+  );
 };
 
 export default WeatherForecast;
