@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { ClipLoader } from 'react-spinners';
 import './App.css';
 
 
@@ -11,36 +12,41 @@ const WeatherForecast = () => {
   const [isError, setIsError] = useState(false);
   const [viewMode, setViewMode] = useState('list');
 
-   // hämtar väderprognos data genom använda geolocation API and OpenWeatherMap API
+   // hämtar väderprognos data 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-
-        try {
-          const response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=ec8a9e0735a382ff5d6dafc6a4333c84&units=metric&cnt=64`
-          );
-
-           // sätter up prognosen och updaterar laddningen
-          setForecastData(response.data);
-          setIsLoading(false);
-        } catch (error) {
-          // hantera errors genom updatera laddning och errors
-          setIsLoading(false);
-          setIsError(true);
-          console.error(error);
-        }
-      },
-      (error) => {
-         // hantera errors genom updatera laddning och errorn
+     const fetchForecastData = async () => {
+      try {
+        const position = await getCurrentPosition();
+        const forecastData = await getForecastData(position.coords.latitude, position.coords.longitude);
+        setForecastData(forecastData);
+        setIsLoading(false);
+      } catch (error) {
         setIsLoading(false);
         setIsError(true);
         console.error(error);
       }
-    );
+    };
+    
+    fetchForecastData();
   }, []);
 
+  //använda geolocation API och OpenWeatherMap API för kunna hämta väderprognos data i nuvarande position
+  const getCurrentPosition = () => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+  };
+
+  const getForecastData = async (latitude, longitude) => {
+    try {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=ec8a9e0735a382ff5d6dafc6a4333c84&units=metric&cnt=64`
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to fetch forecast data');
+    }
+  };
 
    // formaterar porognos data så de inkluderar endast data mellan 9am och 6pm 
   const formatForecastData = () => {
@@ -64,6 +70,8 @@ const WeatherForecast = () => {
 
     return formattedData;
   };
+
+  
 
    // renderar formatterad prognos data som lista och en graf 
   const renderForecastList = () => {
@@ -95,7 +103,9 @@ const WeatherForecast = () => {
       return null;
     }
 
+
     const formattedData = formatForecastData();
+    
 
     return (
       <div>
@@ -118,7 +128,11 @@ const WeatherForecast = () => {
   
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loading-indicator">
+        <ClipLoader size={35} color="#000" loading={isLoading} />
+      </div>
+    );
   }
 
   if (isError) {

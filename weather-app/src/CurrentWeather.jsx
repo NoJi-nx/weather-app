@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { ClipLoader } from 'react-spinners';
+
 
 const CurrentWeather = () => {
   // skapa variabler
@@ -28,6 +30,14 @@ const CurrentWeather = () => {
   // Definera funktion att välja enheter mellan Celsius och Fahrenheit
   const toggleUnit = () => {
     setUnit(unit === 'metric' ? 'imperial' : 'metric');
+  };
+
+  const renderLoadingIndicator = () => {
+    return (
+      <div className="loading-indicator">
+        <ClipLoader size={35} color="#000" loading={isLoading} />
+      </div>
+    );
   };
 
   // Definera funktion att hantera ändringar till sökningen
@@ -144,10 +154,11 @@ const CurrentWeather = () => {
   // rendera komponent
   return (
     <div>
-      <h1>Current Weather</h1>
+      <h1>Weather App</h1>
       {searchError && <p className="error-message">{searchError}</p>}
       {saveError && <p className="error-message">{saveError}</p>}
       <form onSubmit={handleSearchLocationSubmit}>
+        
         <label htmlFor="search-location">Search for location:</label>
         <input
           id="search-location"
@@ -158,7 +169,7 @@ const CurrentWeather = () => {
         <button type="submit">Search</button>
         <button type="button" onClick={handleSaveLocation}>Save</button>
       </form>
-      {renderCurrentWeather()}
+      {isLoading ? renderLoadingIndicator() : renderCurrentWeather()}
       <div>
   <h2>Saved Locations</h2>
   <ul>
