@@ -5,14 +5,14 @@ import { ClipLoader } from 'react-spinners';
 const CurrentWeather = () => {
   // skapa variabler
   const [currentWeather, setCurrentWeather] = useState(null);
-  const [unit, setUnit] = useState('metric'); // standard Celsius
+  const [unit, setUnit] = useState('metric'); // standard: Celsius
   const [searchLocation, setSearchLocation] = useState('');
   const [savedLocations, setSavedLocations] = useState([]);
   const [searchError, setSearchError] = useState('');
   const [saveError, setSaveError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Använd useEffect hook för hämtat the nuvarande väder baserad på användarens plats
+  // Använd useEffect hook för hämta the nuvarande väder baserad på användarens plats
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async (position) => {
       const { latitude, longitude } = position.coords;

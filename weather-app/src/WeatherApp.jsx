@@ -5,14 +5,14 @@ import WeatherMap from './WeatherMap';
 
 const WeatherApp = () => {
 
-  const date = '2023/05/30'; // YYYY/MM/DD format
+  const currentDate = new Date().toISOString().slice(0, 10); // YYYY/MM/DD format
 
   
   return (
     <div>
       <CurrentWeather />
       <WeatherForecast />
-      <WeatherMap date={date} />
+      <WeatherMap date={currentDate} />
     </div>
   );
 };
