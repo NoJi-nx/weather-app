@@ -5,7 +5,7 @@ import WeatherMap from './WeatherMap';
 
 const WeatherApp = () => {
 
-  const currentDate = new Date().toISOString().slice(0, 10); // YYYY/MM/DD format
+  const currentDate = new Date().toISOString().slice(0, 10); // viasr nuvarande data
 
   
   return (
