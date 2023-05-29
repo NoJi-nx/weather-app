@@ -5,13 +5,14 @@ import WeatherMap from './WeatherMap';
 
 const WeatherApp = () => {
 
-  const latitude = 123.45; // Replace with the actual latitude value
-  const longitude = 67.89; // Replace with the actual longitude value
+  const date = '2023/05/30'; // YYYY/MM/DD format
+
+  
   return (
     <div>
       <CurrentWeather />
       <WeatherForecast />
-      <WeatherMap latitude={latitude} longitude={longitude} />
+      <WeatherMap date={date} />
     </div>
   );
 };

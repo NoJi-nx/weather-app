@@ -64,14 +64,14 @@ const [showRainfall, setShowRainfall] = useState(true);
       const forecastDate = new Date(forecast.dt_txt);
       const rainfall = forecast.rain && forecast.rain['3h'];
   
-      // Include data between 9am and 6pm
+      // inkluera data mellan 9am och 6pm
       if (forecastDate.getHours() >= 9 && forecastDate.getHours() < 18) {
         formattedData.push({
           date: forecast.dt_txt,
           temperature: forecast.main.temp,
           humidity: forecast.main.humidity,
           wind: forecast.wind.speed,
-          rainfall: rainfall || 0, // Average rainfall value (or 0 if not available)
+          rainfall: rainfall || 0, // genomsnitt nederbörd
         });
   
         if (rainfall) {
@@ -88,7 +88,7 @@ const [showRainfall, setShowRainfall] = useState(true);
   };
   
 
-   // renderar formatterad prognos data som lista och en graf 
+   // renderar formatterad prognos data som lista 
   const renderForecastList = () => {
     if (!forecastData) {
       return null;
@@ -113,6 +113,8 @@ const [showRainfall, setShowRainfall] = useState(true);
     );
   };
 
+
+  // renderar formatterad prognos data som en graf 
   const renderWeatherForecastChart = () => {
     if (!forecastData) {
       return null;
