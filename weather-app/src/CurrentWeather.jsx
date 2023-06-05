@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ClipLoader } from 'react-spinners';
+import { WiDaySunny, WiCloudy, WiRain, WiSnow, WiThunderstorm } from 'react-icons/wi';
 
 
 const CurrentWeather = () => {
@@ -11,6 +12,12 @@ const CurrentWeather = () => {
   const [searchError, setSearchError] = useState('');
   const [saveError, setSaveError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const temperatureClass = unit === 'metric' ? 'temperature-celsius' : 'temperature-fahrenheit';
+  const saveButtonClass = savedLocations.includes(`${currentWeather?.name}, ${currentWeather?.sys.country}`)
+    ? 'btn btn-danger'
+    : 'btn btn-primary';
+
 
   // Använd useEffect hook för hämta the nuvarande väder baserad på användarens plats
   useEffect(() => {
@@ -27,6 +34,14 @@ const CurrentWeather = () => {
     });
   }, [unit]); //fetcha när vädret ändras
 
+  const weatherIcons = {
+    Clear: <WiDaySunny />,
+    Clouds: <WiCloudy />,
+    Rain: <WiRain />,
+    Snow: <WiSnow />,
+    Thunderstorm: <WiThunderstorm />,
+    // lägg till mer ikoner
+  };
   // Definera funktion att välja enheter mellan Celsius och Fahrenheit
   const toggleUnit = () => {
     setUnit(unit === 'metric' ? 'imperial' : 'metric');
@@ -99,9 +114,13 @@ const CurrentWeather = () => {
     const { name, weather, main, wind, sys } = currentWeather;
 
     return (
+     
       <div className="current-weather">
         <h2>{name}, {sys.country}</h2>
-        <div className="weather-description">{weather[0].description}</div>
+        <div className="weather-description">{weather[0].description}
+        {weatherIcons[weather[0].main]} {/* Render the weather icon */}
+        
+        </div>
         <div className="temperature">{main.temp} {unit === 'metric' ? '°C' : '°F'}</div>
         <div className="weather-info">
           <div>Wind: {wind.speed} {unit === 'metric' ? 'm/s' : 'mph'}</div>
@@ -113,6 +132,7 @@ const CurrentWeather = () => {
           {unit === 'metric' ? 'Switch to Fahrenheit' : 'Switch to Celsius'}
         </button>
       </div>
+
     );
   };
 
@@ -153,40 +173,48 @@ const CurrentWeather = () => {
 
   // rendera komponent
   return (
-    <div>
-      <h1>Weather App</h1>
+    <div className="container">
+      <div className="card">
+      <h1 className="text-center">Weather App</h1>
       {searchError && <p className="error-message">{searchError}</p>}
       {saveError && <p className="error-message">{saveError}</p>}
-      <form onSubmit={handleSearchLocationSubmit}>
-        
-        <label htmlFor="search-location">Search for location:</label>
-        <input
-          id="search-location"
-          type="text"
-          value={searchLocation}
-          onChange={handleSearchLocationChange}
-        />
-        <button type="submit">Search</button>
-        <button type="button" onClick={handleSaveLocation}>Save</button>
+      <form onSubmit={handleSearchLocationSubmit} className="mb-4">
+        <div className="form-group">
+          <input
+            id="search-location"
+            type="text"
+            value={searchLocation}
+            onChange={handleSearchLocationChange}
+            className="form-control form-control-lg"
+            placeholder="Search location"
+          />
+        </div>
+        <button type="submit" className="btn btn-primary btn-lg btn-block">Search</button>
+        <button type="button" onClick={handleSaveLocation} className={saveButtonClass}>
+          {savedLocations.includes(`${currentWeather?.name}, ${currentWeather?.sys.country}`)
+            ? 'Location Saved'
+            : 'Save'}
+        </button>
       </form>
       {isLoading ? renderLoadingIndicator() : renderCurrentWeather()}
-      <div>
-  <h2>Saved Locations</h2>
-  <ul>
-    {savedLocations.map((location) => (
-       <li key={location} onClick={() => handleSavedLocationClick(location)}>
-       {location}
-     </li>
-   ))}
-  </ul>
-</div>
-
+      <div className="mt-4">
+        <h2 className="mb-3">Saved Locations</h2>
+        <ul className="list-group">
+          {savedLocations.map((location) => (
+            <li
+              key={location}
+              onClick={() => handleSavedLocationClick(location)}
+              className="list-group-item list-group-item-action"
+            >
+              {location}
+            </li>
+          ))}
+        </ul>
+      </div>
+      </div>
     </div>
-
-    
   );
 };
-
 
 
 export default CurrentWeather;

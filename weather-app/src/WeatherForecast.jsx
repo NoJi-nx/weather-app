@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { ClipLoader } from 'react-spinners';
-import './App.css';
+import { WiDaySunny, WiCloudy, WiRain, WiSnow, WiThunderstorm } from 'react-icons/wi';
 
 
 const WeatherForecast = () => {
@@ -41,6 +41,8 @@ const [showRainfall, setShowRainfall] = useState(true);
     });
   };
 
+
+
   const getForecastData = async (latitude, longitude) => {
     try {
       const response = await axios.get(
@@ -55,6 +57,7 @@ const [showRainfall, setShowRainfall] = useState(true);
    // formaterar porognos data så de inkluderar endast data mellan 9am och 6pm 
    const formatForecastData = () => {
     const formattedData = [];
+    
   
     let totalRainfall = 0;
     let rainfallCount = 0;
@@ -101,6 +104,7 @@ const [showRainfall, setShowRainfall] = useState(true);
        
         {formattedData.map((data, index) => (
           <div key={index} className="forecast-item">
+            
             <div>{new Date(data.date).toLocaleDateString()}</div>
             <div>{new Date(data.date).toLocaleTimeString()}</div>
             <div>{data.temperature}°C</div>
@@ -122,8 +126,33 @@ const [showRainfall, setShowRainfall] = useState(true);
 
 
     const formattedData = formatForecastData();
+    const chartLines = [];
     
 
+    if (showTemperature) {
+      chartLines.push(
+        <Line type="monotone" dataKey="temperature" stroke="#8884d8" name="Temperature" key="temperature" />
+      );
+    }
+  
+    if (showHumidity) {
+      chartLines.push(
+        <Line type="monotone" dataKey="humidity" stroke="#82ca9d" name="Humidity" key="humidity" />
+      );
+    }
+  
+    if (showWind) {
+      chartLines.push(
+        <Line type="monotone" dataKey="wind" stroke="#ffc658" name="Wind" key="wind" />
+      );
+    }
+  
+    if (showRainfall) {
+      chartLines.push(
+        <Line type="monotone" dataKey="rainfall" stroke="#ff0000" name="Rainfall" key="rainfall" />
+      );
+    }
+  
     return (
       <div>
         <div className="chart-container">
@@ -132,12 +161,7 @@ const [showRainfall, setShowRainfall] = useState(true);
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="temperature" stroke="#8884d8" name="Temperature" />
-            <Line type="monotone" dataKey="humidity" stroke="#82ca9d" name="Humidity" />
-            <Line type="monotone" dataKey="wind" stroke="#ffc658" name="Wind" />
-            {showRainfall && (
-              <Line type="monotone" dataKey="rainfall" stroke="#ff0000" name=" Rainfall" />
-            )}
+            {chartLines}
           </LineChart>
         </div>
       </div>
@@ -160,54 +184,59 @@ const [showRainfall, setShowRainfall] = useState(true);
 
    // renderar the väder prognos UI med formatterade data
    return (
-    <div>
-      <h2>Weather Forecast</h2>
+    <div className="container">
+      <h2 className="text-center">Weather Forecast</h2>
       <div className="toggle-buttons">
-      <button onClick={() => setShowChart(false)}>Show  List</button>
-        <button onClick={() => setShowChart(true)}>Show Chart</button>
+        <button className="btn btn-primary" onClick={() => setShowChart(false)}>Show List</button>
+        <button className="btn btn-primary" onClick={() => setShowChart(true)}>Show Chart</button>
       </div>
-  
+
       {showChart && (
         <>
           <div className="filter-options">
-            <label>
+            <label className="form-check">
               <input
                 type="checkbox"
+                className="form-check-input"
                 checked={showTemperature}
                 onChange={() => setShowTemperature(!showTemperature)}
               />
               Temperature
             </label>
-            <label>
+            <label className="form-check">
               <input
                 type="checkbox"
+                className="form-check-input"
                 checked={showHumidity}
                 onChange={() => setShowHumidity(!showHumidity)}
               />
               Humidity
             </label>
-            <label>
+            <label className="form-check">
               <input
                 type="checkbox"
+                className="form-check-input"
                 checked={showWind}
                 onChange={() => setShowWind(!showWind)}
               />
               Wind
             </label>
-
-            <label>
+            <label className="form-check">
               <input
-               type="checkbox"
-               checked={showRainfall}
+                type="checkbox"
+                className="form-check-input"
+                checked={showRainfall}
                 onChange={() => setShowRainfall(!showRainfall)}
-                />
-                 Rainfall
-                </label>
-                </div>
+              />
+              Rainfall
+            </label>
+          </div>
+          <div className="chart-container">
           {renderWeatherForecastChart()}
+          </div>
         </>
       )}
-  
+
       {!showChart && (
         <>
           {renderForecastList()}

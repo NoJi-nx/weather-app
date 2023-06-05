@@ -1,69 +1,120 @@
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+  --primary-color: #01599c;
+  --secondary-color: #fff;
+  --background-color: #f7f7f7;
+  --text-color: #333;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* Fonts */
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 20px;
 }
 
-button {
+/* WeatherForecast Styles */
+.forecast-item {
+ 
+  padding: 10px;
+  background-color: var(--secondary-color);
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  row-gap: 5px;
 }
-button:hover {
-  border-color: #646cff;
+.forecast-item div {
+  
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: var(--text-color);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+.forecast-item div:first-child {
+
+  font-weight: bold;
+}
+
+.forecast-item div:nth-child(2) {
+
+  color: #777;
+}
+
+.forecast-item div:nth-child(3) {
+  
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* WeatherMap Styles */
+.map-container {
+  
+  position: relative;
+  height: 400px;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.loading-indicator {
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+
+.leaflet-control-container .leaflet-top.leaflet-left {
+
+  top: 10px;
+  left: 10px;
+}
+
+.leaflet-control-container .leaflet-control-zoom {
+
+  background-color: var(--secondary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--primary-color);
+}
+
+.leaflet-control-container .leaflet-control-zoom-in {
+  margin-bottom: 1px;
+}
+
+.leaflet-control-container .leaflet-control-zoom-out {
+  margin-top: 1px;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #000000;
     background-color: #ffffff;
   }
+  
   a:hover {
     color: #747bff;
   }
-  button {
+  
+  .button {
     background-color: #f9f9f9;
+    color: #000000;
   }
 }
