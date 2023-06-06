@@ -2,6 +2,7 @@ import React from 'react';
 import CurrentWeather from './CurrentWeather';
 import WeatherForecast from './WeatherForecast';
 import WeatherMap from './WeatherMap';
+import './index.css';
 
 const WeatherApp = () => {
 

@@ -1,8 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --primary-color: #01599c;
   --secondary-color: #fff;
-  --background-color: #f7f7f7;
+  --background-color: #f0f0f0;
   --text-color: #333;
 }
 
@@ -19,18 +22,17 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* WeatherForecast Styles */
+
+
 .forecast-item {
  
-  padding: 10px;
+  padding: 20px;
   background-color: var(--secondary-color);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   
-  display: grid;
-  grid-template-rows: repeat(3, auto);
-  row-gap: 5px;
+ 
 }
 .forecast-item div {
   
@@ -55,7 +57,7 @@ h2 {
   font-weight: bold;
 }
 
-/* WeatherMap Styles */
+
 .map-container {
   
   position: relative;
@@ -102,7 +104,7 @@ h2 {
 .leaflet-control-container .leaflet-control-zoom-out {
   margin-top: 1px;
 }
-
+ 
 @media (prefers-color-scheme: light) {
   :root {
     color: #000000;

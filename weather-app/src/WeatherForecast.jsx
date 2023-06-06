@@ -103,7 +103,7 @@ const [showRainfall, setShowRainfall] = useState(true);
       <div>
        
         {formattedData.map((data, index) => (
-          <div key={index} className="forecast-item">
+          <div key={index} className="mx-auto my-5 forecast-item">
             
             <div>{new Date(data.date).toLocaleDateString()}</div>
             <div>{new Date(data.date).toLocaleTimeString()}</div>
@@ -184,66 +184,66 @@ const [showRainfall, setShowRainfall] = useState(true);
 
    // renderar the väder prognos UI med formatterade data
    return (
-    <div className="container">
-      <h2 className="text-center">Weather Forecast</h2>
-      <div className="toggle-buttons">
-        <button className="btn btn-primary" onClick={() => setShowChart(false)}>Show List</button>
-        <button className="btn btn-primary" onClick={() => setShowChart(true)}>Show Chart</button>
+    <div className="container flex flex-col items-center justify-center p-2 mx-auto my-10 bg-white rounded-xl lg:max-w-5xl ">
+      <h2 className="mb-4 text-3xl font-semibold text-center">Weather Forecast</h2>
+      <div className="flex mb-4 toggle-buttons">
+        <button className="px-4 py-2 mr-2 rounded-full btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={() => setShowChart(false)}>Show List</button>
+        <button className="px-4 py-2 rounded-full btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={() => setShowChart(true)}>Show Chart</button>
       </div>
-
+  
       {showChart && (
         <>
-          <div className="filter-options">
-            <label className="form-check">
+          <div className="mb-4 space-y-2 filter-options">
+            <label className="flex items-center">
               <input
                 type="checkbox"
-                className="form-check-input"
+                className="w-4 h-4 text-blue-500 form-checkbox"
                 checked={showTemperature}
                 onChange={() => setShowTemperature(!showTemperature)}
               />
-              Temperature
+              <span className="ml-2 font-medium text-gray-700">Temperature</span>
             </label>
-            <label className="form-check">
+            <label className="flex items-center">
               <input
                 type="checkbox"
-                className="form-check-input"
+                className="w-4 h-4 text-blue-500 form-checkbox"
                 checked={showHumidity}
                 onChange={() => setShowHumidity(!showHumidity)}
               />
-              Humidity
+              <span className="ml-2 font-medium text-gray-700">Humidity</span>
             </label>
-            <label className="form-check">
+            <label className="flex items-center">
               <input
                 type="checkbox"
-                className="form-check-input"
+                className="w-4 h-4 text-blue-500 form-checkbox"
                 checked={showWind}
                 onChange={() => setShowWind(!showWind)}
               />
-              Wind
+              <span className="ml-2 font-medium text-gray-700">Wind</span>
             </label>
-            <label className="form-check">
+            <label className="flex items-center">
               <input
                 type="checkbox"
-                className="form-check-input"
+                className="w-4 h-4 text-blue-500 form-checkbox"
                 checked={showRainfall}
                 onChange={() => setShowRainfall(!showRainfall)}
               />
-              Rainfall
+              <span className="ml-2 font-medium text-gray-700">Rainfall</span>
             </label>
           </div>
           <div className="chart-container">
-          {renderWeatherForecastChart()}
+            {renderWeatherForecastChart()}
           </div>
         </>
       )}
-
+  
       {!showChart && (
         <>
           {renderForecastList()}
         </>
       )}
     </div>
-  );
+  )
 };
 
 export default WeatherForecast;
