@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { WiDaySunny, WiCloudy, WiRain, WiSnow, WiThunderstorm } from 'react-icons/wi';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faStar, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 const CurrentWeather = () => {
+  // skapa variabler
   const [currentWeather, setCurrentWeather] = useState(null);
   const [unit, setUnit] = useState('metric');
   const [searchLocation, setSearchLocation] = useState('');
@@ -13,9 +16,10 @@ const CurrentWeather = () => {
 
  
   const saveButtonClass = savedLocations.includes(`${currentWeather?.name}, ${currentWeather?.sys.country}`)
-    ? 'bg-red-500 text-white px-2 py-2'
+    ? 'bg-green-500 text-white px-2 py-2'
     : 'bg-blue-500 text-white px-2 py-2 rounded';
 
+    // Använd useEffect hook för hämta the nuvarande väder baserad på användarens plats
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async (position) => {
       const { latitude, longitude } = position.coords;
@@ -37,7 +41,9 @@ const CurrentWeather = () => {
     Snow: <WiSnow />,
     Thunderstorm: <WiThunderstorm />,
   };
+  // lägg till mer ikoner
 
+  // Definera funktion att välja enheter mellan Celsius och Fahrenheit
   const toggleUnit = () => {
     setUnit(unit === 'metric' ? 'imperial' : 'metric');
   };
@@ -50,15 +56,21 @@ const CurrentWeather = () => {
     );
   };
 
+
+  // Definera funktion att hantera ändringar till sökningen
   const handleSearchLocationChange = (event) => {
     setSearchLocation(event.target.value);
   };
 
+   // funktion för hantera form när man ska söka
   const handleSearchLocationSubmit = async (event) => {
     event.preventDefault();
     const trimmedSearchLocation = searchLocation.trim();
 
+    // trimma sök input fältet för inte tillåta whitespace
     if (trimmedSearchLocation === '') {
+
+       // hantera tom sök fält
       setSearchError('Please enter a location');
       return;
     }
@@ -68,6 +80,7 @@ const CurrentWeather = () => {
 
     setIsLoading(true);
 
+    //hantera errors under api calls
     try {
       const response = await fetch(url);
 
@@ -85,6 +98,8 @@ const CurrentWeather = () => {
       setIsLoading(false);
     }
   };
+
+   //  funktion för rendera nuvarande väder data
 
   const renderCurrentWeather = () => {
     if (isLoading) {
@@ -134,10 +149,12 @@ const CurrentWeather = () => {
     );
   };
 
+  //spara platser i en lista
   const handleSaveLocation = () => {
     if (currentWeather) {
       const locationName = `${currentWeather.name}, ${currentWeather.sys.country}`;
 
+       // se om platsen är sparad
       if (!savedLocations.includes(locationName)) {
         setSavedLocations((prevLocations) => [...prevLocations, locationName]);
         setSaveError('');
@@ -151,6 +168,7 @@ const CurrentWeather = () => {
     const apiKey = 'ec8a9e0735a382ff5d6dafc6a4333c84';
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=${unit}&appid=${apiKey}`;
 
+     //hantera errors under api calls
     try {
       const response = await fetch(url);
 
@@ -184,13 +202,21 @@ const CurrentWeather = () => {
               placeholder="Search location"
             />
             <button type="submit" className="px-2 py-2 m-5 text-white bg-blue-500 rounded">
-              Search
+            <FontAwesomeIcon icon={faSearch} className="mr-2" />
             </button>
             
             <button type="button" onClick={handleSaveLocation} className= {saveButtonClass} >
-          {savedLocations.includes(`${currentWeather?.name}, ${currentWeather?.sys.country}`)
-            ? 'Location Saved'
-            : 'Save'}
+            {savedLocations.includes(`${currentWeather?.name}, ${currentWeather?.sys.country}`) ? (
+    <>
+      <FontAwesomeIcon icon={faCheck} className="mr-1" />
+      Location Saved
+    </>
+  ) : (
+    <>
+      <FontAwesomeIcon icon={faStar} className="mr-1" />
+      
+    </>
+  )}
         </button>
         
         
@@ -199,7 +225,7 @@ const CurrentWeather = () => {
 
         {isLoading ? renderLoadingIndicator() : renderCurrentWeather()}
 
-        <div className="mt-4">
+        <div className="mt-4 ">
           <h2 className="mb-3">Saved Locations</h2>
           <ul className="list-group">
             {savedLocations.map((location) => (

@@ -30,7 +30,7 @@ const WeatherMap = ({ date }) => {
 
   //visar kartan
   return (
-    <div>
+    <div className="map-container">
       {isLoading ? (
         <div>Loading radar image...</div>
       ) : (

@@ -100,10 +100,10 @@ const [showRainfall, setShowRainfall] = useState(true);
     const formattedData = formatForecastData();
 
     return (
-      <div>
+      <div className='flex flex-wrap items-center justify-center forecast-container '>
        
         {formattedData.map((data, index) => (
-          <div key={index} className="mx-auto my-5 forecast-item">
+          <div key={index} className="mx-16 my-2 forecast-item">
             
             <div>{new Date(data.date).toLocaleDateString()}</div>
             <div>{new Date(data.date).toLocaleTimeString()}</div>
@@ -184,11 +184,13 @@ const [showRainfall, setShowRainfall] = useState(true);
 
    // renderar the väder prognos UI med formatterade data
    return (
-    <div className="container flex flex-col items-center justify-center p-2 mx-auto my-10 bg-white rounded-xl lg:max-w-5xl ">
+    <div className="container flex flex-col items-center justify-center mx-auto my-12 bg-white rounded-xl lg:max-w-5xl ">
       <h2 className="mb-4 text-3xl font-semibold text-center">Weather Forecast</h2>
       <div className="flex mb-4 toggle-buttons">
-        <button className="px-4 py-2 mr-2 rounded-full btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={() => setShowChart(false)}>Show List</button>
-        <button className="px-4 py-2 rounded-full btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={() => setShowChart(true)}>Show Chart</button>
+        <button className="px-4 py-2 mr-2 border-2 rounded-full btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        onClick={() => setShowChart(false)}>Show List</button>
+        <button className="px-4 py-2 border-2 rounded-full btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        onClick={() => setShowChart(true)}>Show Chart</button>
       </div>
   
       {showChart && (

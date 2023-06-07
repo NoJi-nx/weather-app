@@ -25,20 +25,18 @@ h2 {
 
 
 .forecast-item {
- 
   padding: 20px;
   background-color: var(--secondary-color);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-  
- 
+  text-align: center;
+  gap: 10px;
 }
-.forecast-item div {
-  
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: var(--text-color);
+
+.forecast-item > div {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .forecast-item div:first-child {
@@ -60,12 +58,14 @@ h2 {
 
 .map-container {
   
-  position: relative;
-  height: 400px;
-  width: 100%;
-  margin-bottom: 20px;
+  position: fixed;
+  top: 50px;
+  right: 10px;
+  height: 39%;
+  width: 21%;
+  margin-bottom: 50px;
   border-radius: 8px;
-  overflow: hidden;
+  border: 5px solid #99a6bb;
 }
 
 .loading-indicator {
@@ -77,34 +77,7 @@ h2 {
 }
 
 
-.leaflet-control-container .leaflet-top.leaflet-left {
 
-  top: 10px;
-  left: 10px;
-}
-
-.leaflet-control-container .leaflet-control-zoom {
-
-  background-color: var(--secondary-color);
-  border: 1px solid var(--primary-color);
-  border-radius: 4px;
-  width: 26px;
-  height: 26px;
-  line-height: 26px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 14px;
-  color: var(--primary-color);
-}
-
-.leaflet-control-container .leaflet-control-zoom-in {
-  margin-bottom: 1px;
-}
-
-.leaflet-control-container .leaflet-control-zoom-out {
-  margin-top: 1px;
-}
- 
 @media (prefers-color-scheme: light) {
   :root {
     color: #000000;
