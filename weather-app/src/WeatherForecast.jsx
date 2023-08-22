@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { ClipLoader } from 'react-spinners';
-import { WiDaySunny, WiCloudy, WiRain, WiSnow, WiThunderstorm } from 'react-icons/wi';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWind, faTint } from '@fortawesome/free-solid-svg-icons';
 
 
 const WeatherForecast = () => {
@@ -109,8 +110,14 @@ const [showRainfall, setShowRainfall] = useState(true);
             <div>{new Date(data.date).toLocaleTimeString()}</div>
             <div>{data.temperature}°C</div>
             <div>{data.weather}</div>
-            <div>{data.wind} m/s</div>
-            <div>{data.humidity}%</div>
+            <div className="info-item">
+          <FontAwesomeIcon icon={faWind} className="info-icon" /> {/* Wind icon */}
+          {data.wind} m/s
+        </div>
+        <div className="info-item">
+          <FontAwesomeIcon icon={faTint} className="info-icon" /> {/* Humidity icon */}
+          {data.humidity}%
+        </div>
           </div>
         ))}
       </div>
@@ -184,18 +191,18 @@ const [showRainfall, setShowRainfall] = useState(true);
 
    // renderar the väder prognos UI med formatterade data
    return (
-    <div className="container flex flex-col items-center justify-center mx-auto my-12 bg-white rounded-xl lg:max-w-5xl ">
-      <h2 className="mb-4 text-3xl font-semibold text-center">Weather Forecast</h2>
-      <div className="flex mb-4 toggle-buttons">
-        <button className="px-4 py-2 mr-2 border-2 rounded-full btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500" 
+    <div className="forecast-container flex flex-col items-center justify-center mx-auto my-12 bg-white rounded-xl lg:max-w-5xl ">
+      <h2 className="forecast-title mb-4 text-3xl font-semibold text-center">Weather Forecast</h2>
+      <div className="forecast-buttons flex mb-4 toggle-buttons">
+        <button className="forecast-button px-4 py-2 mr-2 border-2 rounded-full btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500" 
         onClick={() => setShowChart(false)}>Show List</button>
-        <button className="px-4 py-2 border-2 rounded-full btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        <button className="forecast-button px-4 py-2 border-2 rounded-full btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500" 
         onClick={() => setShowChart(true)}>Show Chart</button>
       </div>
   
       {showChart && (
         <>
-          <div className="mb-4 space-y-2 filter-options">
+          <div className="checkboxes mb-4 space-y-2 filter-options">
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -203,7 +210,7 @@ const [showRainfall, setShowRainfall] = useState(true);
                 checked={showTemperature}
                 onChange={() => setShowTemperature(!showTemperature)}
               />
-              <span className="ml-2 font-medium text-gray-700">Temperature</span>
+              <span className="ml-2 font-medium ">Temperature</span>
             </label>
             <label className="flex items-center">
               <input
@@ -212,7 +219,7 @@ const [showRainfall, setShowRainfall] = useState(true);
                 checked={showHumidity}
                 onChange={() => setShowHumidity(!showHumidity)}
               />
-              <span className="ml-2 font-medium text-gray-700">Humidity</span>
+              <span className="ml-2 font-medium ">Humidity</span>
             </label>
             <label className="flex items-center">
               <input
@@ -221,7 +228,7 @@ const [showRainfall, setShowRainfall] = useState(true);
                 checked={showWind}
                 onChange={() => setShowWind(!showWind)}
               />
-              <span className="ml-2 font-medium text-gray-700">Wind</span>
+              <span className="ml-2 font-medium">Wind</span>
             </label>
             <label className="flex items-center">
               <input
@@ -230,7 +237,7 @@ const [showRainfall, setShowRainfall] = useState(true);
                 checked={showRainfall}
                 onChange={() => setShowRainfall(!showRainfall)}
               />
-              <span className="ml-2 font-medium text-gray-700">Rainfall</span>
+              <span className="ml-2 font-medium">Rainfall</span>
             </label>
           </div>
           <div className="chart-container">
@@ -244,7 +251,7 @@ const [showRainfall, setShowRainfall] = useState(true);
           {renderForecastList()}
         </>
       )}
-    </div>
+      </div>
   )
 };
 
