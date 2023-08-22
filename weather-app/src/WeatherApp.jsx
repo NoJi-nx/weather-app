@@ -11,6 +11,7 @@ const WeatherApp = () => {
   
   return (
     <div>
+       <h1 className='mb-4 text-center text-white-900 md:text-5xl lg:text-1xl'>Weatherer</h1>
       <CurrentWeather />
       <WeatherForecast />
       <WeatherMap date={currentDate} />
