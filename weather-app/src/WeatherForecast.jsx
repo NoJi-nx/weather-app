@@ -101,7 +101,7 @@ const [showRainfall, setShowRainfall] = useState(true);
     const formattedData = formatForecastData();
 
     return (
-      <div className='flex flex-wrap items-center justify-center forecast-container '>
+      <div className='flex flex-wrap items-center justify-center  '>
        
         {formattedData.map((data, index) => (
           <div key={index} className="mx-16 my-2 forecast-item">
@@ -191,7 +191,7 @@ const [showRainfall, setShowRainfall] = useState(true);
 
    // renderar the väder prognos UI med formatterade data
    return (
-    <div className="forecast-container flex flex-col items-center justify-center mx-auto my-12 bg-white rounded-xl lg:max-w-5xl ">
+    <div className="forecast-container flex flex-col items-center justify-center   my-12 bg-white rounded-xl ">
       <h2 className="forecast-title mb-4 text-3xl font-semibold text-center">Weather Forecast</h2>
       <div className="forecast-buttons flex mb-4 toggle-buttons">
         <button className="forecast-button px-4 py-2 mr-2 border-2 rounded-full btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500" 
